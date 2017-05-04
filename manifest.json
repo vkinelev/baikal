@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+
+  "name": "Baikal",
+  "description": "A quick navigation between pages with keyboard",
+  "version": "0.0.1",
+
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab"
+  ]
+}
