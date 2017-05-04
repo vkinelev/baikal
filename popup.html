@@ -21,12 +21,24 @@
         max-width: 400px;
       }
 /**/
-      td:focus {
-        background-color: green;
+      tr:focus {
+        background-color: grey;
       }
 
       tr:hover {
-        background-color: grey;
+        background-color: lightgrey;
+      }
+
+      .link-caption {
+        margin: 8px 0 0 0;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .link-href {
+        margin: 0 0 8px 0;
+        font-size: 14px;
+        word-wrap: nowrap;
       }
     </style>
 
@@ -41,9 +53,17 @@
   <body>
     <input id="filter" type="text" name="" value="" tabindex=1 placeholder="Type to search...">
     <table id=links>
-      <tr>
-        <th align=left>URL</th>
-      </tr>
+      <tbody>
+      </tbody>
     </table>
+
+    <template id="linkRowTemplate">
+      <tr>
+        <td>
+          <p class="link-caption"></p>
+          <p class="link-href"></p>
+        </td>
+      </tr>
+    </template>
   </body>
 </html>

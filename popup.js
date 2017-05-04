@@ -6,9 +6,7 @@ var allLinks = [];
 var visibleLinks = [];
 
 function gotoURL(event) {
-  // alert('1');
-
-  const newURL = event.target.innerText;
+  const newURL = event.target.querySelector('.link-href').innerText;
 
   chrome.windows.getCurrent(function (currentWindow) {
     chrome.tabs.query(
@@ -23,7 +21,7 @@ function gotoURL(event) {
 
 // Re-filter allLinks into visibleLinks and reshow visibleLinks.
 function filterLinks() {
-  var filterValue = document.getElementById('filter').value;
+  var filterValue = document.getElementById('filter').value.toLowerCase();
   var terms = filterValue.split(' ');
   visibleLinks = allLinks.filter(function(link) {
     for (var termI = 0; termI < terms.length; ++termI) {
@@ -36,7 +34,11 @@ function filterLinks() {
             continue;
           }
         }
-        var found = (-1 !== link.indexOf(term));
+        var found = (
+          -1 !== link.href.toLowerCase().indexOf(term) ||
+          -1 !== link.innerText.toLowerCase().indexOf(term)
+        );
+
         if (found != expected) {
           return false;
         }
@@ -48,26 +50,35 @@ function filterLinks() {
 }
 
 function showLinks() {
-  var linksTable = document.getElementById('links');
-  while (linksTable.children.length > 1) {
+  var linksTable = document.querySelector('#links > tbody');
+  while (linksTable.children.length > 0) {
     linksTable.removeChild(linksTable.children[linksTable.children.length - 1])
   }
-  for (var i = 0; i < visibleLinks.length; ++i) {
-    var row = document.createElement('tr');
 
-    var col1 = document.createElement('td');
-    col1.innerText = visibleLinks[i];
-    col1.onclick = gotoURL;
-    col1.style.whiteSpace = 'nowrap';
-    col1.tabIndex = i + 2;
-    col1.onkeyup = function(event) {
+  var templete = document.querySelector('#linkRowTemplate');
+  const tr = templete.content.querySelector("tr");
+  const td = templete.content.querySelector("td");
+  const linkCaptionElement = td.querySelector(".link-caption");
+  const linkHrefElement = td.querySelector(".link-href");
+
+  // Clone the new row and insert it into the table
+  const tb = document.querySelector("tbody");
+
+  for (var i = 0; i < visibleLinks.length; ++i) {
+    linkCaptionElement.innerText = visibleLinks[i].innerText;
+    linkHrefElement.innerText = visibleLinks[i].href;
+    let clone = document.importNode(templete.content, true);
+
+    const newTr = clone.querySelector('tr');
+    newTr.onclick = gotoURL;
+    newTr.tabIndex = i + 2;
+    newTr.onkeyup = function(event) {
       event.preventDefault();
       if (event.keyCode == 13) {
         gotoURL(event);
       }
     }
-    row.appendChild(col1);
-    linksTable.appendChild(row);
+    tb.appendChild(clone);
   }
 }
 

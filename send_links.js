@@ -4,7 +4,6 @@
 
 // Send back to the popup a sorted deduped list of valid link URLs on this page.
 // The popup injects this script into all frames in the active tab.
-
 var links = [].slice.apply(document.getElementsByTagName('a'));
 links = links.map(function(element) {
   // Return an anchor's href attribute, stripping any URL fragment (hash '#').
@@ -15,17 +14,34 @@ links = links.map(function(element) {
   if (hashIndex >= 0) {
     href = href.substr(0, hashIndex);
   }
-  return href;
+  return {
+    href: href,
+    innerText: element.innerText
+  };
 });
 
-links.sort();
+
+
+links.sort(function(a, b) {
+  var nameA = a.href.toUpperCase(); // ignore upper and lowercase
+  var nameB = b.href.toUpperCase(); // ignore upper and lowercase
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) {
+    return 1;
+  }
+
+  // names must be equal
+  return 0;
+});
 
 // Remove duplicates and invalid URLs.
 var kBadPrefix = 'javascript';
 for (var i = 0; i < links.length;) {
-  if (((i > 0) && (links[i] == links[i - 1])) ||
-      (links[i] == '') ||
-      (kBadPrefix == links[i].toLowerCase().substr(0, kBadPrefix.length))) {
+  if (((i > 0) && (links[i].href == links[i - 1].href)) ||
+      (links[i].href == '') ||
+      (kBadPrefix == links[i].href.toLowerCase().substr(0, kBadPrefix.length))) {
     links.splice(i, 1);
   } else {
     ++i;
