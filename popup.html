@@ -6,21 +6,33 @@
  -->
 <html>
   <head>
-    <title>Getting Started Extension's Popup</title>
+    <title>Baikal - Navigate between pages with a keyboard</title>
     <style>
       body {
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
-        min-width: 500px;
+        width: 600px;
+        padding-top: 40px;
       }
-      #status {
-        /* avoid an excessively wide status text */
-        white-space: pre;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 400px;
+
+      .search-container {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background-color: white;
       }
-/**/
+
+      #filter {
+        width: 100%;
+        font-size: 150%;
+      }
+
+      table {
+        width: 100%;
+      }
+
       tr:focus {
         background-color: grey;
       }
@@ -51,7 +63,10 @@
     <script src="popup.js"></script>
   </head>
   <body>
-    <input id="filter" type="text" name="" value="" tabindex=1 placeholder="Type to search...">
+    <section class="search-container">
+      <input id="filter" type="text" name="" value="" tabindex=1 placeholder="Type to search...">
+    </section>
+
     <table id=links>
       <tbody>
       </tbody>
