@@ -3,7 +3,11 @@
 A quick navigation between pages with keyboard. Displays a list of all links
 within a page in a pop up window. Clicking or hitting Enter on a link navigates to the selected link.
 
-Use search box to quick find a required link. 
+Use search box to quick find a required link.
+
+## Demo
+
+![demo](demo.gif "Demo")
 
 ## Installation in Chrome
 
